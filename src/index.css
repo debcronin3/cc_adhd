@@ -1,0 +1,22 @@
+@import "../node_modules/jspsych/css/jspsych.css";
+
+.container {
+    display: grid;
+    grid-template-columns: [col1] 12.5% [col2] 12.5% [col3] 12.5% [col4] 12.5% [col5] 12.5% [col6] 12.5% [col7] 12.5% [col8] 12.5%;
+    grid-template-rows: [row1] 50px [row2] 50px [row3] 50px [row4] 50px [row5] 50px;
+    grid-template-areas: 
+        "l00 l01 l02 l03 l04 l05 l06 l07"
+        "l10 l11 l12 l13 l14 l15 l16 l17"
+        "l20 l21 l22 l23 l24 l25 l26 l27"
+        "l30 l31 l32 l33 l34 l35 l36 l37"
+        "l40 l41 l42 l43 l44 l45 l46 l47";
+    column-gap: 10px;
+    row-gap: 10px;
+}
+
+.item-a {
+    height: 20px;
+    width: 20px;
+    grid-area: l21;
+    place-self: center;
+}
