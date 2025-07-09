@@ -1,5 +1,5 @@
 import { initJsPsych } from "jspsych";
-import { BlockStimuli, DistractorImage, GridLoc } from "./types";
+import { BlockStimuli, DistractorImage, GridLoc, TargetImage } from "./types";
 import {
   gridCols,
   gridRows,
@@ -11,6 +11,8 @@ import {
   gridSize,
   targetSize,
 } from "./globals";
+
+const jsPsych = initJsPsych();
 
 function generateStimuli(
   gridLocs: Array<GridLoc>,
@@ -28,10 +30,11 @@ function generateStimuli(
         };
       }),
       type: type,
+      repeatIndex: type === "repeat" ? i : null,
     };
   });
 
-  return this.shuffleArray(blockStimuli);
+  return shuffleArray(blockStimuli);
 }
 
 function generateGridLocs(): Array<GridLoc> {
@@ -77,27 +80,26 @@ function shuffleArray<T>(arr: Array<T>): Array<T> {
 
 function generateDisplayLocs(gridLocs: Array<GridLoc>): Array<Array<GridLoc>> {
   let displayLocs = Array.from({ length: iterations }, () =>
-    this.shuffleArray(gridLocs).slice(0, setSize),
+    shuffleArray(gridLocs).slice(0, setSize),
   );
 
   return displayLocs;
 }
 
-function generatePresentationSet(): Array<Array<DistractorImage | "target">> {
+function generatePresentationSet(): Array<
+  Array<DistractorImage | TargetImage>
+> {
   const foilImages = distractorImages as Array<DistractorImage>;
   const toPresent = Array.from({ length: iterations }, () => {
-    let arr = new Array<DistractorImage | "target">(setSize - 1);
+    let arr = new Array<DistractorImage | TargetImage>(setSize - 1);
     arr = [
-      ...this.jsPsych.randomization.sampleWithReplacement(
-        foilImages,
-        setSize - 1,
-      ),
+      ...jsPsych.randomization.sampleWithReplacement(foilImages, setSize - 1),
     ];
-    arr.push("target");
-    return this.shuffleArray(arr);
+    arr.push([TargetImage.Left, TargetImage.Right][Math.round(Math.random())]);
+    return shuffleArray(arr);
   });
 
-  return this.shuffleArray(toPresent);
+  return shuffleArray(toPresent);
 }
 
 export {

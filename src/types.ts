@@ -22,20 +22,37 @@ export interface TargetSet {
   correctResponse: ResponseKey;
 }
 
+export interface TimelineVarBlockStimuli {
+  tVar: {
+    blockNum: number;
+    type: "rand" | "repeat";
+    stim: Array<StimuliInfo>;
+    repeatIndex: number;
+  };
+}
+
 export interface BlockStimuli {
   trialStim: Array<StimuliInfo>;
   type: "rand" | "repeat";
+  repeatIndex: number | null;
+}
+
+export interface BlockSet {
+  blockNum: number;
+  blocks: Array<BlockStimuli>;
 }
 
 export interface StimuliInfo {
   x: number;
   y: number;
-  image: DistractorImage | "target";
+  image: DistractorImage | TargetImage;
 }
 
 export interface TrialData {
-  trialType: "repeat" | "random";
-  correctResponse: ResponseKey;
+  blockNum: number;
+  trialType: "repeat" | "rand";
   response: ResponseKey;
+  orientation: "left" | "right";
   rt: number;
+  repeatIndex: number | null;
 }
