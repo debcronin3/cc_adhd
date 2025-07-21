@@ -1,5 +1,6 @@
 import { initJsPsych } from "jspsych";
 import SurveyLikert from "@jspsych/plugin-survey-likert";
+import HTMLButtonResp from "@jspsych/plugin-html-button-response";
 import HTMLKeyboardResp from "@jspsych/plugin-html-keyboard-response";
 import VisualSearchGridPlugin from "./grid_plugin";
 import { generateGridLocs, generateStimuli, shuffleArray } from "./utilities";
@@ -7,6 +8,12 @@ import { BlockSet, TimelineVarBlockStimuli } from "./types";
 import { blockSets } from "./globals";
 import { sendTrialData, sendParticipantData } from "./api";
 import { questions } from "./survey";
+import { consent as consentText } from "./consent";
+import {
+  taskInstructions as taskInst,
+  surveyInstructions as surveyInst,
+  welcomeScreen,
+} from "./instructions";
 
 const jsPsych = initJsPsych({
   on_finish: () => {},
@@ -52,15 +59,26 @@ const timeline = new Array();
 
 const welcome = {
   type: HTMLKeyboardResp,
-  stimulus: "Task. Press any key.",
+  stimulus: welcomeScreen,
   record_data: false,
 };
 
 timeline.push(welcome);
 
+const consent = {
+  type: HTMLButtonResp,
+  stimulus: consentText,
+  prompt: "<p>I consent to participate in this study.</p>",
+  choices: ["Yes."],
+  post_trial_gap: 2000,
+  record_data: true,
+};
+
+timeline.push(consent);
+
 const instructions = {
   type: HTMLKeyboardResp,
-  stimulus: "<p>In this experiment, you will...</p>",
+  stimulus: surveyInst,
   post_trial_gap: 2000,
   record_data: false,
 };
@@ -72,10 +90,19 @@ const likert = {
   questions: questions,
   preamble: "<p>Please answer the following questions:</p>",
   randomize_question_order: false,
-  on,
 };
 
 timeline.push(likert);
+
+const taskInstructions = {
+  type: HTMLKeyboardResp,
+  stimulus: taskInst,
+  post_trial_gap: 2000,
+  record_data: false,
+  choices: [" "], // spacebar to continue
+};
+
+timeline.push(taskInstructions);
 
 const blockSetProcedure = {
   timeline: [
