@@ -68,12 +68,12 @@ class VisualSearchGridPlugin implements JsPsychPlugin<Info> {
         const orientation =
           target.image === TargetImage.Left ? "left" : "right";
         const data: TrialData = {
-          blockNum: trialInfo.blockNum,
-          trialType: trialInfo.type,
+          block_num: trialInfo.blockNum,
+          trial_type: trialInfo.type,
           response: key,
           rt: rt,
           orientation: orientation,
-          repeatIndex: trialInfo.repeatIndex,
+          repeat_index: trialInfo.repeatIndex,
         };
         this.jsPsych.finishTrial(data);
       },

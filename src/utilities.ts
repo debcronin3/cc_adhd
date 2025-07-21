@@ -30,7 +30,7 @@ function generateStimuli(
         };
       }),
       type: type,
-      repeatIndex: type === "repeat" ? i : null,
+      repeatIndex: type === "repeat" ? i : -999,
     };
   });
 

@@ -34,7 +34,7 @@ export interface TimelineVarBlockStimuli {
 export interface BlockStimuli {
   trialStim: Array<StimuliInfo>;
   type: "rand" | "repeat";
-  repeatIndex: number | null;
+  repeatIndex: number;
 }
 
 export interface BlockSet {
@@ -49,10 +49,10 @@ export interface StimuliInfo {
 }
 
 export interface TrialData {
-  blockNum: number;
-  trialType: "repeat" | "rand";
+  block_num: number;
+  trial_type: "repeat" | "rand";
   response: ResponseKey;
   orientation: "left" | "right";
   rt: number;
-  repeatIndex: number | null;
+  repeat_index: number | null;
 }

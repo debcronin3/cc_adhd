@@ -4,21 +4,18 @@ import VisualSearchGridPlugin from "./grid_plugin";
 import { generateGridLocs, generateStimuli, shuffleArray } from "./utilities";
 import { BlockSet, TimelineVarBlockStimuli } from "./types";
 import { blockSets } from "./globals";
+import { sendTrialData, sendParticipantData } from "./api";
 
 const jsPsych = initJsPsych({
-  on_finish: () => {
-    console.log(
-      jsPsych.data
-        .get()
-        .values()
-        .map((data) => {
-          delete data.time_elapsed;
-          delete data.trial_type;
-          delete data.plugin_version;
-          return data;
-        }),
-    );
-  },
+  on_finish: () => {},
+});
+
+const prolificID = jsPsych.data.getURLVariable("PROLIFIC_ID");
+const studyID = jsPsych.data.getURLVariable("STUDY_ID");
+const sessionID = jsPsych.data.getURLVariable("SESSION_ID");
+
+jsPsych.data.addProperties({
+  prolific_id: prolificID,
 });
 
 const gridLocs = generateGridLocs();
@@ -83,6 +80,25 @@ const blockSetProcedure = {
     },
   ],
   timeline_variables: timelineVarBlockStimuli.slice(0, 3),
+  on_timeline_finish: async () => {
+    const expData = jsPsych.data
+      .get()
+      .values()
+      .map((data) => {
+        delete data.time_elapsed;
+        delete data.trial_type;
+        delete data.plugin_version;
+        return data;
+      });
+
+    await sendParticipantData({
+      prolific_id: prolificID,
+      study_id: studyID,
+      session_id: sessionID,
+    });
+
+    await sendTrialData(expData);
+  },
 };
 
 timeline.push(blockSetProcedure);
