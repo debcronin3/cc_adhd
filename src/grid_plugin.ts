@@ -54,7 +54,7 @@ class VisualSearchGridPlugin implements JsPsychPlugin<Info> {
   private showSearch(displayElement: HTMLElement): void {
     const gridContainer = displayElement.querySelector("#visual-search-grid");
     const trialInfo = this.jsPsych.evaluateTimelineVariable(
-      "tVar",
+      "tVar"
     ) as TimelineVarBlockStimuli["tVar"];
 
     this.jsPsych.pluginAPI.getKeyboardResponse({
@@ -63,7 +63,7 @@ class VisualSearchGridPlugin implements JsPsychPlugin<Info> {
         const target = trialInfo.stim.find(
           (target) =>
             target.image === TargetImage.Right ||
-            target.image === TargetImage.Left,
+            target.image === TargetImage.Left
         );
         const orientation =
           target.image === TargetImage.Left ? "left" : "right";
@@ -80,23 +80,10 @@ class VisualSearchGridPlugin implements JsPsychPlugin<Info> {
     });
 
     for (const stim of trialInfo.stim) {
-      const stimColor =
-        stim.image === TargetImage.Left || stim.image === TargetImage.Right
-          ? "red"
-          : "black";
-      const stimFontSize =
-        stim.image === TargetImage.Left || stim.image === TargetImage.Right
-          ? "14px"
-          : "9px";
       gridContainer.innerHTML += `
-				<p style="color: ${stimColor}; font-size: ${stimFontSize};
-					position: absolute; top: ${stim.y}px; left: ${stim.x}px">
-					${stim.image}
-				</p>`;
+				<img src=${stim.image} style="position: absolute; top: ${stim.y}px; left: ${stim.x}px"/>`;
     }
   }
-
-  // private endTrial();
 }
 
 export default VisualSearchGridPlugin;

@@ -6,7 +6,7 @@ export const gridRows = 5; //define for given experiment
 export const gridCols = 6; //define for given experiment
 export const setSize = 12; //define for given experiment
 export const blockLength = 16; //define for given experiment; half will be repeated stim, half random
-export const blockSets = 10;
+export const blockSets = 15;
 export const iterations = blockLength / 2;
 
 export const targetImages: Array<TargetSet> = [
@@ -20,3 +20,6 @@ export const distractorImages: Array<DistractorImage> = [
   DistractorImage.Up,
   DistractorImage.Down,
 ];
+
+//background = grey
+//stimuli = black

@@ -1,10 +1,12 @@
 import { initJsPsych } from "jspsych";
+import SurveyLikert from "@jspsych/plugin-survey-likert";
 import HTMLKeyboardResp from "@jspsych/plugin-html-keyboard-response";
 import VisualSearchGridPlugin from "./grid_plugin";
 import { generateGridLocs, generateStimuli, shuffleArray } from "./utilities";
 import { BlockSet, TimelineVarBlockStimuli } from "./types";
 import { blockSets } from "./globals";
 import { sendTrialData, sendParticipantData } from "./api";
+import { questions } from "./survey";
 
 const jsPsych = initJsPsych({
   on_finish: () => {},
@@ -28,7 +30,7 @@ const blockStimuli: Array<BlockSet> = Array.from(
       blockNum: i + 1,
       blocks: shuffleArray([...randStimuli, ...repeatStimuli]),
     };
-  },
+  }
 );
 
 const timelineVarBlockStimuli: Array<TimelineVarBlockStimuli> = [];
@@ -64,6 +66,16 @@ const instructions = {
 };
 
 timeline.push(instructions);
+
+const likert = {
+  type: SurveyLikert,
+  questions: questions,
+  preamble: "<p>Please answer the following questions:</p>",
+  randomize_question_order: false,
+  on,
+};
+
+timeline.push(likert);
 
 const blockSetProcedure = {
   timeline: [

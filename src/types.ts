@@ -1,8 +1,8 @@
 export type GridLoc = [number, number];
 
 export enum TargetImage {
-  Left = "img/left_t.png",
-  Right = "img/right_t.png",
+  Left = "assets/left_t.png",
+  Right = "assets/right_t.png",
 }
 
 export enum ResponseKey {
@@ -11,10 +11,10 @@ export enum ResponseKey {
 }
 
 export enum DistractorImage {
-  Left = "img/left_l.png",
-  Right = "img/right_l.png",
-  Up = "img/up_l.png",
-  Down = "img/down_l.png",
+  Left = "assets/left_l.png",
+  Right = "assets/right_l.png",
+  Up = "assets/up_l.png",
+  Down = "assets/down_l.png",
 }
 
 export interface TargetSet {
