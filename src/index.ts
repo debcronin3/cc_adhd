@@ -6,7 +6,7 @@ import VisualSearchGridPlugin from "./grid_plugin";
 import { generateGridLocs, generateStimuli, shuffleArray } from "./utilities";
 import { BlockSet, TimelineVarBlockStimuli } from "./types";
 import { blockSets } from "./globals";
-import { sendTrialData, sendParticipantData } from "./api";
+import { sendLikertData, sendSearchData, sendParticipantData } from "./api";
 import { questions } from "./survey";
 import { consent as consentText } from "./consent";
 import {
@@ -19,7 +19,7 @@ const jsPsych = initJsPsych({
   on_finish: () => {},
 });
 
-const prolificID = jsPsych.data.getURLVariable("PROLIFIC_ID");
+const prolificID = jsPsych.data.getURLVariable("PROLIFIC_PID");
 const studyID = jsPsych.data.getURLVariable("STUDY_ID");
 const sessionID = jsPsych.data.getURLVariable("SESSION_ID");
 
@@ -37,7 +37,7 @@ const blockStimuli: Array<BlockSet> = Array.from(
       blockNum: i + 1,
       blocks: shuffleArray([...randStimuli, ...repeatStimuli]),
     };
-  }
+  },
 );
 
 const timelineVarBlockStimuli: Array<TimelineVarBlockStimuli> = [];
@@ -70,7 +70,7 @@ const consent = {
   stimulus: consentText,
   prompt: "<p>I consent to participate in this study.</p>",
   choices: ["Yes."],
-  post_trial_gap: 2000,
+  // post_trial_gap: 2000,
   record_data: true,
 };
 
@@ -79,7 +79,7 @@ timeline.push(consent);
 const instructions = {
   type: HTMLKeyboardResp,
   stimulus: surveyInst,
-  post_trial_gap: 2000,
+  // post_trial_gap: 2000,
   record_data: false,
 };
 
@@ -125,18 +125,41 @@ const blockSetProcedure = {
       .values()
       .map((data) => {
         delete data.time_elapsed;
-        delete data.trial_type;
         delete data.plugin_version;
         return data;
       });
 
+    const [likertData] = expData
+      .filter((d) => d.trial_type === "survey-likert")
+      .map((d) => {
+        const answers = Object.fromEntries(
+          Object.entries(d.response).map(([k, v]) => [
+            k.toLowerCase(),
+            v === "" ? -999 : v,
+          ]),
+        );
+        return {
+          prolific_id: d.prolific_id,
+          ...answers,
+        };
+      });
+
+    const searchData = expData
+      .filter((d) => d.trial_type === "visual-search-grid")
+      .map((d) => {
+        d.trial_index = d.trial_index / 2 - 2;
+        return d;
+      });
+
     await sendParticipantData({
-      prolific_id: prolificID,
+      id: prolificID,
       study_id: studyID,
       session_id: sessionID,
     });
 
-    await sendTrialData(expData);
+    await sendLikertData(likertData);
+
+    await sendSearchData(searchData);
   },
 };
 
