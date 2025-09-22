@@ -1,24 +1,12 @@
 export type GridLoc = [number, number];
 
-export enum TargetImage {
-  Left = "assets/left_t.png",
-  Right = "assets/right_t.png",
-}
-
 export enum ResponseKey {
   Left = "f",
   Right = "j",
 }
 
-export enum DistractorImage {
-  Left = "assets/left_l.png",
-  Right = "assets/right_l.png",
-  Up = "assets/up_l.png",
-  Down = "assets/down_l.png",
-}
-
 export interface TargetSet {
-  stimulus: TargetImage;
+  stimulus: string;
   correctResponse: ResponseKey;
 }
 
@@ -45,7 +33,7 @@ export interface BlockSet {
 export interface StimuliInfo {
   x: number;
   y: number;
-  image: DistractorImage | TargetImage;
+  image: string;
 }
 
 export interface TrialData {

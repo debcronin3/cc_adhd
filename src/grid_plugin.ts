@@ -1,10 +1,6 @@
 import { JsPsych, JsPsychPlugin, ParameterType, TrialType } from "jspsych";
-import {
-  ResponseKey,
-  TargetImage,
-  TrialData,
-  TimelineVarBlockStimuli,
-} from "./types";
+import { ResponseKey, TrialData, TimelineVarBlockStimuli } from "./types";
+import { images } from "./globals";
 
 const info = <const>{
   name: "visual-search-grid",
@@ -54,7 +50,7 @@ class VisualSearchGridPlugin implements JsPsychPlugin<Info> {
   private showSearch(displayElement: HTMLElement): void {
     const gridContainer = displayElement.querySelector("#visual-search-grid");
     const trialInfo = this.jsPsych.evaluateTimelineVariable(
-      "tVar"
+      "tVar",
     ) as TimelineVarBlockStimuli["tVar"];
 
     this.jsPsych.pluginAPI.getKeyboardResponse({
@@ -62,11 +58,11 @@ class VisualSearchGridPlugin implements JsPsychPlugin<Info> {
       callback_function: ({ key, rt }: { key: ResponseKey; rt: number }) => {
         const target = trialInfo.stim.find(
           (target) =>
-            target.image === TargetImage.Right ||
-            target.image === TargetImage.Left
+            target.image === images.target.rightT ||
+            target.image === images.target.leftT,
         );
         const orientation =
-          target.image === TargetImage.Left ? "left" : "right";
+          target.image === images.target.leftT ? "left" : "right";
         const data: TrialData = {
           block_num: trialInfo.blockNum,
           trial_type: trialInfo.type,
