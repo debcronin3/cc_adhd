@@ -114,7 +114,7 @@ export const consent = `
       explained to you, that you have been given the time to read the consent
       document, and that you consent to participate in the experiment described
       above. If you would prefer not to participate, please close this browser
-      window. You may keep a copy of this form for your records. Even after
+      window. You may print a copy of this form for your records. Even after
       beginning this experiment, please know that you may withdraw from the
       study at any time.
     </p>

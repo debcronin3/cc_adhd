@@ -28,11 +28,10 @@ const studyID = jsPsych.data.getURLVariable("STUDY_ID");
 const sessionID = jsPsych.data.getURLVariable("SESSION_ID");
 
 if (!prolificID || !studyID || !sessionID) {
-  // [WARNING] Replace for production
-  // window.alert(
-  //   "You must sign up for this study at https://www.prolific.com and gain access using a link provided through Prolific. You will be redirected there now.",
-  // );
-  // window.location.replace("https://www.prolific.com");
+  window.alert(
+    "You must sign up for this study at https://www.prolific.com and gain access using a link provided through Prolific. You will be redirected there now.",
+  );
+  window.location.replace("https://www.prolific.com");
 }
 
 jsPsych.data.addProperties({
@@ -75,9 +74,7 @@ const welcome = {
   record_data: false,
 };
 
-// [WARNING]: uncomment Can we make the Cancel button take 
-// them back to the consent page somehow? Or just automatically 
-// redirect to prolific if they press No?
+// [WARNING]: uncomment
 timeline.push(welcome);
 
 const consent = {
@@ -88,10 +85,7 @@ const consent = {
   button_html: (choice: string) => {
     if (choice === "No, take me back to Prolific.") {
       return `<button class="jspsych-btn"
-  				onclick="if (confirm('You have indicated you do not wish to participate in this study. You will be redirected back to Prolific.')) {
-  					window.location.replace('https://www.prolific.com');
-};
-"
+  				onclick="window.location.replace('https://www.prolific.com')"
   			>${choice}</button>`;
     } else {
       return `<button class="jspsych-btn">${choice}</button>`;
@@ -161,7 +155,7 @@ const blockSetProcedure = {
     },
   ],
   // [WARNING] Use full array in production
-  timeline_variables: timelineVarBlockStimuli.slice(0, 10),
+  timeline_variables: timelineVarBlockStimuli,
   on_timeline_finish: async () => {
     const expData = jsPsych.data
       .get()
@@ -190,22 +184,22 @@ const blockSetProcedure = {
     const searchData = expData
       .filter((d) => d.trial_type === "visual-search-grid")
       .map((d) => {
-        d.trial_index = d.trial_index / 2 - 2;
+        d.trial_index = Math.floor(d.trial_index / 2 - 2);
         return d;
       });
 
     // [WARNING]: uncomment
-    // await sendParticipantData({
-    //   id: prolificID,
-    //   study_id: studyID,
-    //   session_id: sessionID,
-    // });
+    await sendParticipantData({
+      id: prolificID,
+      study_id: studyID,
+      session_id: sessionID,
+    });
 
     // [WARNING]: uncomment
-    // await sendLikertData(likertData);
+    await sendLikertData(likertData);
 
     // [WARNING]: uncomment
-    // await sendSearchData(searchData);
+    await sendSearchData(searchData);
   },
 };
 
@@ -221,7 +215,9 @@ const redirect = {
       new Promise(() =>
         setTimeout(() => {
           console.log("redirecting from promise");
-          window.location.replace("https://www.prolific.com");
+          window.location.replace(
+            "https://app.prolific.com/submissions/complete?cc=CZ6P80E0",
+          );
         }, 10000),
       );
     await test();
@@ -238,7 +234,7 @@ const completion = {
   choices: ["Continue"],
   button_html: (choice: string) =>
     `<button class="jspsych-btn"
-  				onclick="window.location.replace('https://www.prolific.com')">${choice}</button>`,
+  				onclick="window.location.replace('https://app.prolific.com/submissions/complete?cc=CZ6P80E0')">${choice}</button>`,
 };
 
 // [WARNING]: uncomment

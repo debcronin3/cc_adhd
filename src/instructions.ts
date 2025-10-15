@@ -18,19 +18,21 @@ export const surveyInstructions = `
   </div>`;
 
 export const taskInstructions = `
-<div style="width: 1200px">
+<div style="width: 800px">
     <h1>Task Instructions</h1>
     <p>In this experiment, you will see a series of images displayed in a grid.
     Your task is to identify a target letter among several distractor letters as quickly and accurately as possible.
-    The target image will be either a T tilted to the left (left image) or a T tilted to the right (right image). </p>
+    The target image will be either a T with its base pointing left (left image)
+		or a T with its base pointing right (right image). </p>
 
     <div class="row">
+    <div style="display: flex; flex-grow: 1; flex-basis: 100%; justify-content: space-around">
             <img src="${images.target.leftT}" alt="T tilted to the left" style="width: 100px; height: 100px;">
 						<img src="${images.target.rightT}" alt="T tilted to the right" style="width: 100px; height: 100px;">
     </div>
 
-    <p>You will respond by pressing the 'f' key if the target is tilted to the left
-    or the 'j' key if it is tilted to the right.</p>
+    <p>You will respond by pressing the 'f' key if the target is pointing to the left
+    or the 'j' key if it is pointing to the right.</p>
 
     <p>When you are ready to begin the task, press the spacebar.</p>
 </div>
@@ -56,8 +58,9 @@ export const resizeInstructions = `
 export const completionInstructions = `
 			<div style="width: 800px;">
 				<p style="padding: 150px">
-					 You have now completed the study. Click the continue button below
-					 to be redirected back to Prolific to get credit for the survey. You
-					 will be automatically redirected after 10 seconds.
+					 You have now completed the study. Thank you for participating.
+					 Click the continue button below to be redirected back to Prolific
+					 to complete the submission process. Your submission will be reviewed
+					 within 48 hours. You will be automatically redirected after 10 seconds.
 				</p>
 		</div>`;
