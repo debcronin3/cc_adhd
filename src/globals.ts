@@ -1,10 +1,10 @@
 import { ResponseKey, TargetSet } from "./types";
-import leftT from "../assets/left_t.png";
-import rightT from "../assets/right_t.png";
-import leftL from "../assets/left_l.png";
-import rightL from "../assets/right_l.png";
-import upL from "../assets/up_l.png";
-import downL from "../assets/down_l.png";
+import leftT from "/src/assets/left_t.png";
+import rightT from "/src/assets/right_t.png";
+import leftL from "/src/assets/left_l.png";
+import rightL from "/src/assets/right_l.png";
+import upL from "/src/assets/up_l.png";
+import downL from "/src/assets/down_l.png";
 
 export const gridSize: [number, number] = [600, 800];
 export const targetSize: [number, number] = [50, 50];
@@ -16,26 +16,26 @@ export const blockSets = 15;
 export const iterations = blockLength / 2;
 
 export const images = {
-	target: {
-		leftT,
-		rightT,
-	},
-	distractor: {
-		leftL,
-		rightL,
-		upL,
-		downL,
-	},
+  target: {
+    leftT,
+    rightT,
+  },
+  distractor: {
+    leftL,
+    rightL,
+    upL,
+    downL,
+  },
 };
 
 export const targetImages: Array<TargetSet> = [
-	{ stimulus: images.target.leftT, correctResponse: ResponseKey.Left },
-	{ stimulus: images.target.rightT, correctResponse: ResponseKey.Right },
+  { stimulus: images.target.leftT, correctResponse: ResponseKey.Left },
+  { stimulus: images.target.rightT, correctResponse: ResponseKey.Right },
 ];
 
 export const distractorImages: Array<string> = [
-	images.distractor.leftL,
-	images.distractor.rightL,
-	images.distractor.downL,
-	images.distractor.upL,
+  images.distractor.leftL,
+  images.distractor.rightL,
+  images.distractor.downL,
+  images.distractor.upL,
 ];

@@ -44,10 +44,13 @@ class VisualSearchGridPlugin implements JsPsychPlugin<Info> {
 					height: ${trial.gridSize[0]}px"
 			></div>`;
 
-    this.showSearch(display_element);
+    this.showSearch(display_element, trial);
   }
 
-  private showSearch(displayElement: HTMLElement): void {
+  private showSearch(
+    displayElement: HTMLElement,
+    trial: TrialType<Info>,
+  ): void {
     const gridContainer = displayElement.querySelector("#visual-search-grid");
     const trialInfo = this.jsPsych.evaluateTimelineVariable(
       "tVar",
@@ -77,7 +80,11 @@ class VisualSearchGridPlugin implements JsPsychPlugin<Info> {
 
     for (const stim of trialInfo.stim) {
       gridContainer.innerHTML += `
-				<img src=${stim.image} style="position: absolute; top: ${stim.y}px; left: ${stim.x}px"/>`;
+				<img 
+					src=${stim.image}
+					style="position: absolute; top: ${stim.y}px; left: ${stim.x}px; 
+								width: ${trial.targetSize[1]}px; height: ${trial.targetSize[0]}px;"
+				/>`;
     }
   }
 }
