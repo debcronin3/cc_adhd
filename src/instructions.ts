@@ -1,4 +1,4 @@
-import { gridSize } from "./globals";
+import { gridSize, images } from "./globals";
 
 export const welcomeScreen = `
 <div style="width: 800px">
@@ -18,19 +18,15 @@ export const surveyInstructions = `
   </div>`;
 
 export const taskInstructions = `
-<div style="width: 800px">
+<div style="width: 1200px">
     <h1>Task Instructions</h1>
     <p>In this experiment, you will see a series of images displayed in a grid.
     Your task is to identify a target letter among several distractor letters as quickly and accurately as possible.
     The target image will be either a T tilted to the left (left image) or a T tilted to the right (right image). </p>
 
     <div class="row">
-        <div class="column">
-            <img src="../images/left_t.png" alt="T tilted to the left" style="width: 100px; height: 100px;">
-    </div>
-    <div class="column">
-        <img src="../images/right_t.png" alt="T tilted to the right" style="width: 100px; height: 100px;">
-    </div>
+            <img src="${images.target.leftT}" alt="T tilted to the left" style="width: 100px; height: 100px;">
+						<img src="${images.target.rightT}" alt="T tilted to the right" style="width: 100px; height: 100px;">
     </div>
 
     <p>You will respond by pressing the 'f' key if the target is tilted to the left
