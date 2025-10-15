@@ -1,5 +1,5 @@
-export const consent = `<html>
-  <body>
+export const consent = `
+  <div style="width: 800px">
     <h1>Informed Consent</h1>
     <p>Title of Study: ADHD and Visual Attention</p>
     <p>Investigators: Sui Par; Deborah Cronin</p>
@@ -118,5 +118,4 @@ export const consent = `<html>
       beginning this experiment, please know that you may withdraw from the
       study at any time.
     </p>
-  </body>
-</html>`;
+	</div>`;

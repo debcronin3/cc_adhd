@@ -2,8 +2,10 @@ import { initJsPsych } from "jspsych";
 import SurveyLikert from "@jspsych/plugin-survey-likert";
 import HTMLButtonResp from "@jspsych/plugin-html-button-response";
 import HTMLKeyboardResp from "@jspsych/plugin-html-keyboard-response";
+import CallFunction from "@jspsych/plugin-call-function";
 import VisualSearchGridPlugin from "./grid_plugin";
 import { generateGridLocs, generateStimuli, shuffleArray } from "./utilities";
+import { gridSize, targetSize } from "./globals";
 import { BlockSet, TimelineVarBlockStimuli } from "./types";
 import { blockSets } from "./globals";
 import { sendLikertData, sendSearchData, sendParticipantData } from "./api";
@@ -13,6 +15,8 @@ import {
   taskInstructions as taskInst,
   surveyInstructions as surveyInst,
   welcomeScreen,
+  resizeInstructions,
+  completionInstructions,
 } from "./instructions";
 
 const jsPsych = initJsPsych({
@@ -25,7 +29,9 @@ const sessionID = jsPsych.data.getURLVariable("SESSION_ID");
 
 if (!prolificID || !studyID || !sessionID) {
   // [WARNING] Replace for production
-  // window.alert("Missing prolific information");
+  // window.alert(
+  //   "You must sign up for this study at https://www.prolific.com and gain access using a link provided through Prolific. You will be redirected there now.",
+  // );
   // window.location.replace("https://www.prolific.com");
 }
 
@@ -70,39 +76,60 @@ const welcome = {
 };
 
 // [WARNING]: uncomment
-// timeline.push(welcome);
+timeline.push(welcome);
 
 const consent = {
   type: HTMLButtonResp,
   stimulus: consentText,
   prompt: "<p>I consent to participate in this study.</p>",
   choices: ["No", "Yes"],
-  // post_trial_gap: 2000,
+  button_html: (choice: string) => {
+    if (choice === "No") {
+      return `<button class="jspsych-btn"
+  				onclick="if (confirm('You will be redirected back to Prolific and no credit will be given for this study. Are you sure you wish to decline consent?')) {
+  					window.location.replace('https://www.prolific.com');
+};
+"
+  			>${choice}</button>`;
+    } else {
+      return `<button class="jspsych-btn">${choice}</button>`;
+    }
+  },
   record_data: true,
 };
 
 // [WARNING]: uncomment
-// timeline.push(consent);
+timeline.push(consent);
 
 const instructions = {
   type: HTMLKeyboardResp,
   stimulus: surveyInst,
-  // post_trial_gap: 2000,
   record_data: false,
 };
 
 // [WARNING]: uncomment
-// timeline.push(instructions);
+timeline.push(instructions);
 
 const likert = {
   type: SurveyLikert,
   questions: questions,
   preamble: "<p>Please answer the following questions:</p>",
+  scale_width: 800,
   randomize_question_order: false,
 };
 
 // [WARNING]: uncomment
-// timeline.push(likert);
+timeline.push(likert);
+
+const screenResize = {
+  type: HTMLButtonResp,
+  stimulus: resizeInstructions,
+  record_data: false,
+  choices: ["Continue"], // spacebar to continue
+};
+
+// [WARNING]: uncomment
+timeline.push(screenResize);
 
 const taskInstructions = {
   type: HTMLKeyboardResp,
@@ -113,7 +140,7 @@ const taskInstructions = {
 };
 
 // [WARNING]: uncomment
-// timeline.push(taskInstructions);
+timeline.push(taskInstructions);
 
 const blockSetProcedure = {
   timeline: [
@@ -127,8 +154,8 @@ const blockSetProcedure = {
     {
       type: VisualSearchGridPlugin,
       stimulus: jsPsych.timelineVariable("tVar"),
-      targetSize: [10, 10],
-      gridSize: [600, 800],
+      targetSize: targetSize,
+      gridSize: gridSize,
     },
   ],
   // [WARNING] Use full array in production
@@ -180,6 +207,39 @@ const blockSetProcedure = {
   },
 };
 
+// [WARNING]: uncomment
 timeline.push(blockSetProcedure);
+
+const redirect = {
+  type: CallFunction,
+  async: true,
+  func: async (callback: () => {}) => {
+    callback();
+    const test = () =>
+      new Promise(() =>
+        setTimeout(() => {
+          console.log("redirecting from promise");
+          window.location.replace("https://www.prolific.com");
+        }, 10000),
+      );
+    await test();
+  },
+};
+
+// [WARNING]: uncomment
+timeline.push(redirect);
+
+const completion = {
+  type: HTMLButtonResp,
+  stimulus: completionInstructions,
+  record_data: false,
+  choices: ["Continue"],
+  button_html: (choice: string) =>
+    `<button class="jspsych-btn"
+  				onclick="window.location.replace('https://www.prolific.com')">${choice}</button>`,
+};
+
+// [WARNING]: uncomment
+timeline.push(completion);
 
 jsPsych.run(timeline);

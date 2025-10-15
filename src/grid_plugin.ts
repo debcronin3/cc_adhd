@@ -41,8 +41,11 @@ class VisualSearchGridPlugin implements JsPsychPlugin<Info> {
 			<div id="visual-search-grid"
 				style="position: relative;
 					width: ${trial.gridSize[1]}px;
-					height: ${trial.gridSize[0]}px"
-			></div>`;
+					height: ${trial.gridSize[0]}px
+				"
+			>
+
+			</div>`;
 
     this.showSearch(display_element, trial);
   }

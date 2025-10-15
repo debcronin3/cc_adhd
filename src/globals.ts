@@ -7,7 +7,7 @@ import upL from "/src/assets/up_l.png";
 import downL from "/src/assets/down_l.png";
 
 export const gridSize: [number, number] = [600, 800];
-export const targetSize: [number, number] = [50, 50];
+export const targetSize: [number, number] = [40, 40];
 export const gridRows = 5; //define for given experiment
 export const gridCols = 6; //define for given experiment
 export const setSize = 12; //define for given experiment
