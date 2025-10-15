@@ -75,18 +75,20 @@ const welcome = {
   record_data: false,
 };
 
-// [WARNING]: uncomment
+// [WARNING]: uncomment Can we make the Cancel button take 
+// them back to the consent page somehow? Or just automatically 
+// redirect to prolific if they press No?
 timeline.push(welcome);
 
 const consent = {
   type: HTMLButtonResp,
   stimulus: consentText,
   prompt: "<p>I consent to participate in this study.</p>",
-  choices: ["No", "Yes"],
+  choices: ["Yes", "No, take me back to Prolific."],
   button_html: (choice: string) => {
-    if (choice === "No") {
+    if (choice === "No, take me back to Prolific.") {
       return `<button class="jspsych-btn"
-  				onclick="if (confirm('You will be redirected back to Prolific and no credit will be given for this study. Are you sure you wish to decline consent?')) {
+  				onclick="if (confirm('You have indicated you do not wish to participate in this study. You will be redirected back to Prolific.')) {
   					window.location.replace('https://www.prolific.com');
 };
 "
