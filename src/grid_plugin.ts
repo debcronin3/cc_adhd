@@ -83,7 +83,7 @@ class VisualSearchGridPlugin implements JsPsychPlugin<Info> {
 				<img 
 					src=${stim.image}
 					style="position: absolute; top: ${stim.y}px; left: ${stim.x}px; 
-								width: ${trial.targetSize[1]}px; height: ${trial.targetSize[0]}px;"
+								width: ${trial.targetSize[1]}px; height: ${trial.targetSize[0]}px"
 				/>`;
     }
   }

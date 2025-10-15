@@ -127,13 +127,11 @@ const blockSetProcedure = {
     {
       type: VisualSearchGridPlugin,
       stimulus: jsPsych.timelineVariable("tVar"),
-      parameters: {
-        targetSize: [10, 10],
-        gridSize: [600, 800],
-      },
+      targetSize: [10, 10],
+      gridSize: [600, 800],
     },
   ],
-  // [WARNING] Uuse full array in production
+  // [WARNING] Use full array in production
   timeline_variables: timelineVarBlockStimuli.slice(0, 10),
   on_timeline_finish: async () => {
     const expData = jsPsych.data
@@ -167,15 +165,18 @@ const blockSetProcedure = {
         return d;
       });
 
-    await sendParticipantData({
-      id: prolificID,
-      study_id: studyID,
-      session_id: sessionID,
-    });
+    // [WARNING]: uncomment
+    // await sendParticipantData({
+    //   id: prolificID,
+    //   study_id: studyID,
+    //   session_id: sessionID,
+    // });
 
-    await sendLikertData(likertData);
+    // [WARNING]: uncomment
+    // await sendLikertData(likertData);
 
-    await sendSearchData(searchData);
+    // [WARNING]: uncomment
+    // await sendSearchData(searchData);
   },
 };
 
